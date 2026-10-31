@@ -8,13 +8,14 @@ const  text= document.getElementById("task-input")
 const  priorety= document.getElementById("priority-select")
 const  error= document.getElementById("error")
 const taskList = document.getElementById("task-list")
+const left=document.getElementById("left")
 
+
+// הוספה
 form.addEventListener("submit",function(event){
 
 event.preventDefault()
 const t=text.value.trim()
-
-
 
 if (t===""){
 console.log(t)
@@ -26,11 +27,6 @@ error.hidden = true;
 
 const li =document.createElement("li")
 li.classList.add(`priority-${priorety.value}`)
-
-// Step 2: click a task to toggle the "done" class
-li.addEventListener("click", function() {
-    li.classList.toggle("done");
-});
 
 const span=document.createElement("span")
 span.classList.add('text')
@@ -44,6 +40,8 @@ li.appendChild(span)
 li.appendChild(button)
 
 taskList.appendChild(li)
+// עדכון הספירה
+updateCounter();
 
 text.value = ""
 text.focus()
@@ -51,17 +49,31 @@ text.focus()
 
 })
 
+// Step 3: delete with the x button (one listener on the ul - event delegation)
+
 taskList.addEventListener("click", function(event) {
 
     if (event.target.classList.contains("delete")) {
-
-        const lidel = event.target.closest("li");
-        lidel.remove();
-
+        const li = event.target.closest("li");
+        li.remove();
+        updateCounter();
+        return;
     }
 
+    const li = event.target.closest("li");
+// Step 2: click a task to toggle the "done" class
+    if (li) {
+        li.classList.toggle("done");
+        updateCounter();
+    }
+
+
 });
-// Step 3: delete with the x button (one listener on the ul - event delegation)
+
+// עדכון הספירהupdateCounter();
+function updateCounter() {
+    left.textContent = taskList.querySelectorAll("li:not(.done)").length;
+}
 
 // Step 4: "tasks left" counter
 
