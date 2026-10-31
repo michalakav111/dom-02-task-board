@@ -27,6 +27,11 @@ error.hidden = true;
 const li =document.createElement("li")
 li.classList.add(`priority-${priorety.value}`)
 
+// Step 2: click a task to toggle the "done" class
+li.addEventListener("click", function() {
+    li.classList.toggle("done");
+});
+
 const span=document.createElement("span")
 span.classList.add('text')
 span.textContent=t;
@@ -42,11 +47,20 @@ taskList.appendChild(li)
 
 text.value = ""
 text.focus()
+
+
 })
 
+taskList.addEventListener("click", function(event) {
 
-// Step 2: click a task to toggle the "done" class
+    if (event.target.classList.contains("delete")) {
 
+        const lidel = event.target.closest("li");
+        lidel.remove();
+
+    }
+
+});
 // Step 3: delete with the x button (one listener on the ul - event delegation)
 
 // Step 4: "tasks left" counter
